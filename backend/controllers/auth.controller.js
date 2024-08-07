@@ -1,3 +1,3 @@
-export async function login(req, res){
-    res.send("login")
+export async function login(req, res) {
+  res.send("login");
 }
