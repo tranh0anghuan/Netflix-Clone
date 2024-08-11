@@ -33,7 +33,7 @@ export async function getTVDetails(req, res) {
   const { id } = req.params;
   try {
     const data = await fetchFromTMDB(
-      `https://api.themoviedb.org/3/tv/${id}language=en-US`
+      `https://api.themoviedb.org/3/tv/${id}?language=en-US`
     );
     res.status(200).json({ success: true, content: data });
   } catch (error) {
