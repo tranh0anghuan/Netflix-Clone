@@ -48,11 +48,7 @@ export async function sigup(req, res) {
     const hashedPassword = await bcryptjs.hash(password, salt);
 
     // random user avatar
-    const PROFILE_PICS = [
-      "./assests/avatar1.png",
-      "./assests/avatar2.png",
-      "./assests/avatar3.png",
-    ];
+    const PROFILE_PICS = ["/avatar1.png", "/avatar2.png", "/avatar3.png"];
     const image = PROFILE_PICS[Math.floor(Math.random() * PROFILE_PICS.length)];
 
     // create new user
