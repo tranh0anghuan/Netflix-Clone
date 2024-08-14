@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SingupPage from "./pages/SignupPage";
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authUser.js";
 import { useEffect } from "react";
@@ -33,7 +33,6 @@ function App() {
         <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={"/"} />} />
         <Route path="/signup" element={!user ? <SingupPage /> : <Navigate to={"/"} />} />
       </Routes>
-      <Footer/>
       
       <Toaster/>
     </>
