@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../../store/authUser.js";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignUp = (e) => {
+  const {login} = useAuthStore()
+
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log(email, password);
+    login({email,password})
   };
 
   return (
@@ -24,7 +27,7 @@ function LoginPage() {
             Log In
           </h1>
 
-          <form className="space-y-4" onSubmit={handleSignUp}>
+          <form className="space-y-4" onSubmit={handleLogin}>
             <div>
               <label
                 htmlFor="email"

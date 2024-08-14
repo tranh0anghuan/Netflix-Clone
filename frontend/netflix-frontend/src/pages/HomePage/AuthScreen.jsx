@@ -1,9 +1,16 @@
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function AuthScreen() {
   const [email, setEmail] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    navigate("/signup?email=" + email);
+  };
 
   return (
     <div className="hero-bg relative">
@@ -26,7 +33,10 @@ function AuthScreen() {
           Ready to watch? Enter your email to create or restart your membership.
         </p>
 
-        <form className="flex flex-col md:flex-row gap-4 w-1/2">
+        <form
+          className="flex flex-col md:flex-row gap-4 w-1/2"
+          onSubmit={handleFormSubmit}
+        >
           <input
             type="email"
             placeholder="Email address"
@@ -123,11 +133,10 @@ function AuthScreen() {
         </div>
       </div>
 
-       {/* Separator */}
-       <div className="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
+      {/* Separator */}
+      <div className="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
 
-
-        {/* 3rd section */}
+      {/* 3rd section */}
       <div className="py-10 bg-black text-white">
         <div className="flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col px-4 md:px-2">
           {/* Left side */}
@@ -136,13 +145,18 @@ function AuthScreen() {
               Watch everywhere
             </h2>
             <p className="text-lg md:text-xl">
-                Stream unlimited movies and TV shows on your phone, tablet, laptop and TV
+              Stream unlimited movies and TV shows on your phone, tablet, laptop
+              and TV
             </p>
           </div>
 
           {/* Right side */}
           <div className="flex-1 relative">
-            <img src="/device-pile.png" alt="Device image" className="mt-4 z-20 relative" />
+            <img
+              src="/device-pile.png"
+              alt="Device image"
+              className="mt-4 z-20 relative"
+            />
             <video
               className="absolute top-2 left-1/2 -translate-x-1/2  h-4/6 z-10 max-w-[63%]"
               playsInline
@@ -156,11 +170,10 @@ function AuthScreen() {
         </div>
       </div>
 
-       {/* Separator */}
-       <div className="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
+      {/* Separator */}
+      <div className="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
 
-
-        {/* 4th section */}
+      {/* 4th section */}
       <div className="py-10 bg-black text-white">
         <div className="flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col px-4 md:px-2">
           {/* Left side */}
@@ -171,16 +184,15 @@ function AuthScreen() {
           {/* Right side */}
           <div className="flex-1 text-center md:text-left">
             <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
-             Create profile for kids
+              Create profile for kids
             </h2>
             <p className="text-lg md:text-xl">
-                Send kids on adventures with their favorite characters in a space made just for them-free with your membership
+              Send kids on adventures with their favorite characters in a space
+              made just for them-free with your membership
             </p>
           </div>
         </div>
       </div>
-
-
     </div>
   );
 }
