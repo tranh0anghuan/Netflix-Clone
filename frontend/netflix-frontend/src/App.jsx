@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authUser.js";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
+import Footer from "./components/Footer/index.jsx";
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/signup" element={!user ? <SingupPage /> : <Navigate to={"/"} />} />
       </Routes>
       
+      <Footer/>
       <Toaster/>
     </>
   );
