@@ -38,7 +38,7 @@ function LoginPage() {
               <input
                 type="email"
                 className="w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring"
-                placeholder="you@example.com"
+                placeholder="Email address"
                 id="email"
                 value={email}
                 onChange={(e) => {
@@ -58,6 +58,7 @@ function LoginPage() {
                 type="password"
                 className="w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring"
                 id="password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);

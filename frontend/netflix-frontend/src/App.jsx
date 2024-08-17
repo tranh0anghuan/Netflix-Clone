@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import Footer from "./components/Footer/index.jsx";
 import WatchPage from "./pages/WatchPage/index.jsx";
+import SearchPage from "./pages/SearchPage/index.jsx";
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
         <Route path="/login" element={!user ? <LoginPage /> : <Navigate to={"/"} />} />
         <Route path="/signup" element={!user ? <SingupPage /> : <Navigate to={"/"} />} />
         <Route path="/watch/:id" element={user ? <WatchPage /> : <Navigate to={"/login"} />} />
+        <Route path="/search" element={user ? <SearchPage /> : <Navigate to={"/login"} />} />
       </Routes>
       
       <Footer/>
