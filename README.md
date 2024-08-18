@@ -9,7 +9,14 @@ This project is a web application that allows users to fetch movies and TV shows
 - **Frontend:** React.js, Tailwind CSS  
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB  
-- **Authentication:** JSON Web Tokens (JWT)  
+- **Authentication:** JSON Web Tokens (JWT)
+
+## Tech Stack  
+<ul>  
+    <li><i class="fab fa-react"></i> React.js</li>  
+    <li><i class="fab fa-node-js"></i> Node.js</li>  
+    <li><i class="fab fa-mongodb"></i> MongoDB</li>  
+</ul>
 
 ## Features  
 - Fetch Movies and TV Shows  
