@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 
 function NotFoundPage() {
   return (
+    
     <div className="min-h-screen bg-cover bg-center flex flex-col justify-center items-center text-white"
      style={{backgroundImage:`url(/404.png)`}}>
         <header className="absolute top-0 left-0 bg-black w-full p-4">
@@ -18,6 +19,8 @@ function NotFoundPage() {
             <Link to={"/"} className="bg-white text-black py-2 px-4r rounded font-semibold p-4">Netflix Home</Link>
         </main>
      </div>
+
+     
   )
 }
 
