@@ -119,6 +119,9 @@ function SearchPage() {
                     <Link
                       to={`/watch/${result.id}`}
                       className="flex flex-col items-center"
+                      onClick={() =>{
+                        setContentType(activeTab)
+                      }}
                     >
                       <img
                         src={ORIGINAL_IMG_BASE_URL + result.poster_path}
