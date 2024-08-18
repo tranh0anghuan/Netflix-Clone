@@ -1,4 +1,4 @@
-# Project Title  
+# Netflix-Clone 
 
 ## Description  
 This project is a web application that allows users to fetch movies and TV shows, watch trailers, and search for their favorite content. It features a responsive UI and utilizes various technologies for a seamless experience.  
