@@ -11,6 +11,7 @@ import Footer from "./components/Footer/index.jsx";
 import WatchPage from "./pages/WatchPage/index.jsx";
 import SearchPage from "./pages/SearchPage/index.jsx";
 import HistoryPage from "./pages/HistoryPage/index.jsx";
+import NotFoundPage from "./pages/NotFoundPage/index.jsx";
 
 function App() {
 
@@ -39,6 +40,8 @@ function App() {
         <Route path="/watch/:id" element={user ? <WatchPage /> : <Navigate to={"/login"} />} />
         <Route path="/search" element={user ? <SearchPage /> : <Navigate to={"/login"} />} />
         <Route path="/history" element={user ? <HistoryPage /> : <Navigate to={"/login"} />} />
+        <Route path="/*" element={<NotFoundPage/>} />
+
 
       </Routes>
       
