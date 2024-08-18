@@ -18,6 +18,13 @@ function HomeScreen() {
 
   const [imgLoading, setImgLoading] = useState(true);
 
+  const handleLoadImg = ()=>{
+    setImgLoading(true);
+    setTimeout(()=>{
+      setImgLoading(false)
+    },1000)
+  }
+
   if (!trendingContent) {
     return (
       <div className="h-screen text-white relative">
@@ -40,7 +47,7 @@ function HomeScreen() {
           src={ORIGINAL_IMG_BASE_URL + trendingContent?.backdrop_path}
           alt="hero img"
           className="absolute top-0 left-0 w-full h-full object-cover -z-50"
-          onLoad={() => {setImgLoading(false)}}
+          onLoad={handleLoadImg}
         />
 
         <div

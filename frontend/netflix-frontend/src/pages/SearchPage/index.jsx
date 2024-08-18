@@ -89,8 +89,7 @@ function SearchPage() {
             <Search className="size-6" />
           </button>
         </form>
-
-        {/* Show spinner if loading, otherwise show results */}
+        
         {loading ? (
           <div className="flex justify-center items-center py-10">
             <div className="loader border-t-4 border-red-600 border-solid rounded-full w-16 h-16 animate-spin"></div>
