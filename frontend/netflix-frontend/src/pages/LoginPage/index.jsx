@@ -6,7 +6,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const {login} = useAuthStore()
+  const {login, isLoggingIn} = useAuthStore()
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -69,8 +69,9 @@ function LoginPage() {
             <button
               className="w-full py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring"
               type="submit"
+              disabled={isLoggingIn}
             >
-              Log In
+              {isLoggingIn ? "Loading..." : "Log in"}
             </button>
           </form>
 

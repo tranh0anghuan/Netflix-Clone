@@ -31,10 +31,23 @@
     transparent 70%
   );
   bottom: -10vw;
-  content:"";
+  content: "";
   left: 10vw;
   position: absolute;
   right: 10vw;
   top: -10vw;
   z-index: -1;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1a202c;
 }
