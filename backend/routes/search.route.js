@@ -1,19 +1,17 @@
 import express from "express";
 import {
+  addSearchHistory,
   getSearchHistory,
   removeItemFromSearchHistory,
-  searchMovie,
-  searchPerson,
-  searchTv,
+  search,
 } from "../controllers/search.controller.js";
 
 const router = express.Router();
 
-router.get("/person/:query", searchPerson);
-router.get("/movie/:query", searchMovie);
-router.get("/tv/:query", searchTv);
+router.get("/:type/:query", search);
 
 router.get("/history", getSearchHistory);
+router.get("/history/:type/:id", addSearchHistory);
 router.delete("/history/:id", removeItemFromSearchHistory);
 
 export default router;

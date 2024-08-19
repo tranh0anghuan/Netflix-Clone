@@ -43,6 +43,14 @@ function SearchPage() {
     }
   };
 
+  const handleAddSearchHistory = async (id) => {
+    try {
+      await axios.get(`api/v1/search/history/${activeTab}/${id}`);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   return (
     <div className="bg-black min-h-screen text-white">
       <Navbar />
@@ -89,7 +97,7 @@ function SearchPage() {
             <Search className="size-6" />
           </button>
         </form>
-        
+
         {loading ? (
           <div className="flex justify-center items-center py-10">
             <div className="loader border-t-4 border-red-600 border-solid rounded-full w-16 h-16 animate-spin"></div>
@@ -119,8 +127,9 @@ function SearchPage() {
                     <Link
                       to={`/watch/${result.id}`}
                       className="flex flex-col items-center"
-                      onClick={() =>{
-                        setContentType(activeTab)
+                      onClick={() => {
+                        setContentType(activeTab);
+                        handleAddSearchHistory(result.id);
                       }}
                     >
                       <img
