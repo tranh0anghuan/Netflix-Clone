@@ -4,6 +4,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { SMALL_IMG_BASE_URL } from "../../utils/constants.js";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import "./index.css"; 
+
+import { Modal } from "antd";
+import WatchModal from "../WatchModal/index.jsx";
 
 function MovieSlider({ category }) {
   const { contentType } = useContentStore();
@@ -11,6 +15,8 @@ function MovieSlider({ category }) {
   const [content, setContent] = useState([]);
 
   const [showArrows, setShowArrows] = useState(false);
+
+  const [id , setId] = useState(1)
 
   const sliderRef = useRef(null);
 
@@ -44,6 +50,17 @@ function MovieSlider({ category }) {
     getContent();
   }, [contentType, category]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       className="bg-black text-white relative px-5 md:px-20"
@@ -54,10 +71,16 @@ function MovieSlider({ category }) {
         {formattedCategoryName} {formattedContentType}
       </h2>
 
-      <div className="flex space-x-4 overflow-x-scroll scrollbar-hide" ref={sliderRef}>
+      <div
+        className="flex space-x-4 overflow-x-scroll scrollbar-hide"
+        ref={sliderRef}
+      >
         {content.map((item) => (
           <Link
-            to={`/watch/${item.id}`}
+            // to={`/watch/${item.id}`}
+            onClick={()=>{
+              setId(item.id);
+              showModal()}}
             className="min-w-[250px] relative group"
             key={item.id}
           >
@@ -89,6 +112,15 @@ function MovieSlider({ category }) {
           </button>
         </>
       )}
+
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <WatchModal id={id}/>
+      </Modal>
     </div>
   );
 }
