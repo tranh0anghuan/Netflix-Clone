@@ -200,7 +200,7 @@ function WatchPage() {
                 return (
                   <Link
                     to={`/watch/${content.id}`}
-                    className="hover:scale-110 transition-transform duration-300 ease-linear"
+                    className="hover:scale-105 transition-transform duration-300 ease-linear"
                     key={content.id}
                   >
                     <div className="relative w-52  rounded overflow-hidden shadow-lg bg-[#2F2F2F] text-white m-2">
@@ -212,7 +212,7 @@ function WatchPage() {
                         />
                       </div>
 
-                      <div className="bg-gradient-to-t from-[#2F2F2F] via-transparent to-transparent absolute w-full h-[100px] top-[92px] left-0 z-10"></div>
+                      <div className=" bg-gradient-to-t from-[#2F2F2F] via-transparent to-transparent absolute w-full h-[150px] top-[43px] left-0 z-10"></div>
 
                       <div className="flex flex-col justify-between px-4 py-2 h-[200px]">
                         <div className="font-bold text-sm h-12">
@@ -230,12 +230,12 @@ function WatchPage() {
               })}
 
               <ChevronLeft
-                className="absolute top-1/2 -translate-y-1/2 left-2 size-12 rounded-full bg-black  bg-opacity-50 opacity-0 group-hover:opacity-75 text-white transition-all duration-300 cursor-pointer"
+                className="absolute top-1/2 -translate-y-1/2 left-2 size-12 rounded-full bg-black  bg-opacity-50 opacity-0 group-hover:opacity-75 text-white transition-all duration-300 cursor-pointer z-20"
                 size={24}
                 onClick={scrollLeft}
               />
               <ChevronRight
-                className="absolute top-1/2 -translate-y-1/2 right-2 size-12 rounded-full bg-black  bg-opacity-50 opacity-0 group-hover:opacity-75 text-white transition-all duration-300 cursor-pointer"
+                className="absolute top-1/2 -translate-y-1/2 right-2 size-12 rounded-full bg-black  bg-opacity-50 opacity-0 group-hover:opacity-75 text-white transition-all duration-300 cursor-pointer z-20"
                 size={24}
                 onClick={scrollRight}
               />

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useContentStore } from "../../store/content";
 import axios from "axios";
-import { ChevronLeft, ChevronRight,  Play, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Plus } from "lucide-react";
 import ReactPlayer from "react-player";
 import {
   ORIGINAL_IMG_BASE_URL,
@@ -95,7 +95,7 @@ function WatchModal({ id }) {
   const handleAddtoList = async () => {
     try {
       const res = await axios.get(`/api/v1/list/addList/${contentType}/${id}`);
-      toast.success(res.data.message)
+      toast.success(res.data.message);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -189,7 +189,7 @@ function WatchModal({ id }) {
               </div>
             </div>
 
-            {trailers.length > 0 &&
+            {trailers?.length > 0 &&
               currentData.map((item) => (
                 <>
                   <div className="text-white p-4 rounded-lg shadow-md">
@@ -214,7 +214,7 @@ function WatchModal({ id }) {
                   <div className="border-t border-gray-800 my-4"></div>
                 </>
               ))}
-            {trailers.length === 0 && (
+            {trailers?.length === 0 && (
               <h2 className="text-xl text-center mt-5 mb-5">
                 No episodes available for{" "}
                 <span className="font-bold text-red-600">
@@ -223,7 +223,7 @@ function WatchModal({ id }) {
               </h2>
             )}
 
-            {currentData.length > 0 ? (
+            {currentData?.length > 0 ? (
               <Pagination
                 className="d-flex justify-center mb-5 bg-[#141414]"
                 current={currentPage}
@@ -239,7 +239,7 @@ function WatchModal({ id }) {
           ""
         )}
         {similarContent.length > 0 && (
-          <div className="mt-12 max-w-5xl mx-auto relative z-100">
+          <div className="mt-12 max-w-5xl mx-auto relative ">
             <h3 className="text-2xl font-bold mb-4">More Like This</h3>
 
             <div
@@ -251,10 +251,10 @@ function WatchModal({ id }) {
                 return (
                   <Link
                     to={`/watch/${content.id}`}
-                    className="hover:scale-110 transition-transform duration-300 ease-linear"
+                    className="hover:scale-105 transition-transform duration-300 ease-linear"
                     key={content.id}
                   >
-                    <div className="relative w-52  rounded overflow-hidden shadow-lg bg-[#2F2F2F] text-white m-2">
+                    <div className=" relative w-52  rounded overflow-hidden shadow-lg bg-[#2F2F2F] text-white m-2">
                       <div className="relative h-48">
                         <img
                           className="w-full h-full object-cover"
@@ -263,11 +263,17 @@ function WatchModal({ id }) {
                         />
                       </div>
 
-                      <div className="bg-gradient-to-t from-[#2F2F2F] via-transparent to-transparent absolute w-full h-[100px] top-[92px] left-0 z-10"></div>
+                      <div className="bg-gradient-to-t from-[#2F2F2F] via-transparent to-transparent absolute w-full h-[150px] top-[43px] left-0 z-10"></div>
 
                       <div className="flex flex-col justify-between px-4 py-2 h-[200px]">
                         <div className="font-bold text-sm h-12">
-                          {content.title || content.name}
+                          {/* {content.title || content.name} */}
+                          {(content.title?.length > 35
+                            ? content?.title.slice(0, 35) + " ..."
+                            : content?.title) ||
+                            (content.name?.length > 35
+                              ? content?.name.slice(0, 35) + " ..."
+                              : content?.name)}
                         </div>
                         <p className="text-gray-400 text-sm flex-grow">
                           {content?.overview.length > 120
