@@ -40,6 +40,9 @@ function Navbar() {
           <Link to="/history" className="hover:opacity-40 mx-2">
             Search History
           </Link>
+          <Link to="/list" className="hover:opacity-40 mx-2">
+            My List
+          </Link>
         </div>
       </div>
 

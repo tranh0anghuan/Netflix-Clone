@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useContentStore } from "../../store/content";
 import axios from "axios";
-import { ChevronLeft, ChevronRight, Info, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight,  Play, Plus } from "lucide-react";
 import ReactPlayer from "react-player";
 import {
   ORIGINAL_IMG_BASE_URL,
@@ -11,6 +11,7 @@ import {
 import { formatDate } from "../../utils/dateFuntion";
 import WatchPageSkeleton from "../../components/WatchPageSkeleton";
 import { Pagination } from "antd";
+import toast from "react-hot-toast";
 
 function WatchModal({ id }) {
   const [trailers, setTrailers] = useState([]);
@@ -91,6 +92,15 @@ function WatchModal({ id }) {
     });
   };
 
+  const handleAddtoList = async () => {
+    try {
+      const res = await axios.get(`/api/v1/list/addList/${contentType}/${id}`);
+      toast.success(res.data.message)
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black p-10">
@@ -120,13 +130,15 @@ function WatchModal({ id }) {
               <Play className="size-6 inline-block mr-2 fill-black" />
               Play
             </Link>
-            <Link
-              to={`/watch/${content?.id}`}
-              className="bg-gray-500/70 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mr-4 flex items-center"
+            <div
+              onClick={() => {
+                handleAddtoList();
+              }}
+              className="bg-gray-500/70 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mr-4 flex items-center hover:cursor-pointer"
             >
-              <Info className="size-6 inline-block mr-2" />
-              More Info
-            </Link>
+              <Plus className="size-6 inline-block mr-2" />
+              My List
+            </div>
           </div>
         </div>
 

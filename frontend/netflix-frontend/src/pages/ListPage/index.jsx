@@ -1,16 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { SMALL_IMG_BASE_URL } from "../../utils/constants";
-import { ChevronDown, Play, Plus, Trash } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { SMALL_IMG_BASE_URL } from "../../utils/constants";
+import { ChevronDown, Play, Plus, Trash } from "lucide-react";
 import { Modal, Pagination } from "antd";
 import WatchModal from "../../components/WatchModal";
-import "./index.css";
 
-function HistoryPage() {
-  const [searchHistory, setSearchHistory] = useState([]);
+
+function ListPage() {
+
+  const [list, setList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [id, setId] = useState(1);
 
@@ -19,22 +20,22 @@ function HistoryPage() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = searchHistory.slice(indexOfFirstItem, indexOfLastItem);
+  const currentData = list.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
-    const getSearchHistory = async () => {
+    const getList = async () => {
       try {
-        const res = await axios.get(`/api/v1/search/history`);
-        setSearchHistory(res.data.content);
+        const res = await axios.get(`/api/v1/list/getList`);
+        setList(res.data.content);
       } catch (error) {
         console.log(error.message);
-        setSearchHistory([]);
+        setList([]);
       }
     };
-    getSearchHistory();
+    getList();
   }, []);
 
-  if (searchHistory.length === 0) {
+  if (list.length === 0) {
     return (
       <div className="bg-black min-h-screen text-white">
         <Navbar />
@@ -52,21 +53,14 @@ function HistoryPage() {
     setCurrentPage(page);
   };
 
+
   const handleDelete = async (entry) => {
     try {
-      const res = await axios.delete(`/api/v1/search/history/${entry.id}`);
-      setSearchHistory(searchHistory.filter((item) => item.id !== entry.id));
+      const res = await axios.delete(`/api/v1/list/${entry.id}`);
+      setList(list.filter((item) => item.id !== entry.id));
       toast.success(res.data.message)
     } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-  const handleAddtoList = async (entry) => {
-    try {
-      const res = await axios.get(`/api/v1/list/addList/${entry.searchType}/${entry.id}`);
-      toast.success(res.data.message)
-    } catch (error) {
-      toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
     }
   };
 
@@ -84,7 +78,7 @@ function HistoryPage() {
     <div className="bg-black min-h-screen text-white">
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Search History</h1>
+        <h1 className="text-3xl font-bold mb-8">My List</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
           {currentData?.map((entry) => (
             <Link className="min-w-[250px] relative group" key={entry.id}>
@@ -114,12 +108,7 @@ function HistoryPage() {
                       <Play className="fill-black size-6 " />
                     </div>
 
-                    <div
-                      className="add-btn relative  text-white cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-[#141414] rounded-full flex justify-center items-center transition hover:border-white border border-gray-500 mr-2"
-                      onClick={() => {
-                        handleAddtoList(entry);
-                      }}
-                    >
+                    <div className="add-btn relative  text-white cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-[#141414] rounded-full flex justify-center items-center transition hover:border-white border border-gray-500 mr-2">
                       <Plus className="fill-[#141414] size-6" />
                       <span className="add-sub bg-gray-300 w-[100px] top-[-50px] p-[10px] absolute rounded-md font-semibold text-black text-xs opacity-0 transform -translate-y-2 transition-opacity duration-300 ease-in-out hidden">
                         Add to My List
@@ -174,7 +163,7 @@ function HistoryPage() {
         <Pagination
           className="d-flex justify-center mb-5 bg-black"
           current={currentPage}
-          total={searchHistory.length}
+          total={list.length}
           pageSize={itemsPerPage}
           onChange={handlePageChange}
         />
@@ -191,7 +180,7 @@ function HistoryPage() {
         <WatchModal id={id} />
       </Modal>
     </div>
-  );
+  )
 }
 
-export default HistoryPage;
+export default ListPage

@@ -4,20 +4,6 @@ import { fetchFromTMDB } from "../services/tmdb.service.js";
 var result = [];
 var genres = [];
 
-// const getGenre = async (type) => {
-//   var arr = [];
-//   try {
-//     const response = await fetchFromTMDB(
-//       `https://api.themoviedb.org/3/genre/tv/list?language=en`
-//     );
-//     arr = response.genres;
-//     return arr;
-//   } catch (error) {
-//     console.log("Error in searchPerson controller: ", error.message);
-//     return [];
-//   }
-// };
-
 const getGenre = async (type) => {
   try {
     // Ensure to replace 'YOUR_API_KEY' with your actual TMDB API key.
@@ -111,7 +97,7 @@ export async function addSearchHistory(req, res) {
       });
     }
   } catch (error) {
-    console.log("Error in searchPerson controller: ", error.message);
+    console.log("Error in search controller: ", error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 }
