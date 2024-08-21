@@ -1,0 +1,51 @@
+.add-btn:hover .add-sub {
+    display: block;
+    opacity: 1; /* For smooth transition */
+    transform: translateY(0);
+}
+
+.add-sub::before {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    border-style: solid;
+    border-color:  #d1d5db transparent transparent transparent ;
+    border-width: 20px 30px;
+    content: "";
+}
+
+.trash-btn:hover .trash-sub {
+    display: block;
+    opacity: 1; 
+    transform: translateY(0);
+}
+
+.trash-sub::before {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    border-style: solid;
+    border-color:  #d1d5db transparent transparent transparent ;
+    border-width: 20px 30px;
+    content: "";
+}
+
+.info-btn:hover .info-sub {
+    display: block;
+    opacity: 1; 
+    transform: translateY(0);
+}
+
+.info-sub::before {
+    position: absolute;
+    top: 25px;
+    right: 30px;
+    border-style: solid;
+    border-color:  #d1d5db transparent transparent transparent ;
+    border-width: 20px 30px;
+    content: "";
+}
+
+.ant-pagination-item-link{
+    color: white !important;
+}

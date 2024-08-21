@@ -6,6 +6,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { ORIGINAL_IMG_BASE_URL } from "../../utils/constants";
+import MovieSlider from "../../components/MovieSlider";
+import { Modal } from "antd";
+import WatchModal from "../../components/WatchModal";
 
 function SearchPage() {
   const [activeTab, setActiveTab] = useState("movie");
@@ -17,6 +20,10 @@ function SearchPage() {
   const [loading, setLoading] = useState(false); // New loading state
 
   const { setContentType } = useContentStore();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [id, setId] = useState(1);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -44,11 +51,18 @@ function SearchPage() {
   };
 
   const handleAddSearchHistory = async (id) => {
-    try {
-      await axios.get(`api/v1/search/history/${activeTab}/${id}`);
-    } catch (error) {
-      toast.error(error);
-    }
+    await axios.get(`api/v1/search/history/${activeTab}/${id}`);
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -98,6 +112,15 @@ function SearchPage() {
           </button>
         </form>
 
+        {results.length == 0 ? (
+          <div className="flex flex-col gap-10 bg-black py-10">
+            <MovieSlider category={"popular"}/>
+            <MovieSlider category={"top_rated"}/>
+          </div>
+        ) : (
+          ""
+        )}
+
         {loading ? (
           <div className="flex justify-center items-center py-10">
             <div className="loader border-t-4 border-red-600 border-solid rounded-full w-16 h-16 animate-spin"></div>
@@ -108,7 +131,7 @@ function SearchPage() {
               if (!result.poster_path && !result.profile_path) return null;
 
               return (
-                <div className="bg-gray-800 p-4 rounded" key={result.id}>
+                <div className="bg-[#141414] p-4 rounded" key={result.id}>
                   {activeTab === "person" ? (
                     <div
                       to={`/actor/${result.name}`}
@@ -125,21 +148,32 @@ function SearchPage() {
                     </div>
                   ) : (
                     <Link
-                      to={`/watch/${result.id}`}
+                      // to={`/watch/${result.id}`}
                       className="flex flex-col items-center"
                       onClick={() => {
+                        showModal();
+                        setId(result.id);
                         setContentType(activeTab);
                         handleAddSearchHistory(result.id);
                       }}
                     >
-                      <img
-                        src={ORIGINAL_IMG_BASE_URL + result.poster_path}
-                        alt={result.title || result.name}
-                        className="max-h-96 rounded mx-auto "
-                      />
-                      <h2 className="mt-2 text-xl font-bold">
-                        {result.title || result.name}
-                      </h2>
+                      <div className="relative w-72  rounded overflow-hidden shadow-lg bg-[#141414] text-white m-2">
+                        <div className="relative h-72">
+                          <img
+                            className="w-full h-full object-cover"
+                            src={ORIGINAL_IMG_BASE_URL + result.poster_path}
+                            alt={result.title || result.name}
+                          />
+                        </div>
+
+                        <div className="bg-gradient-to-t from-[#141414] via-transparent to-transparent absolute w-full h-[100px] top-[190px] left-0 z-10"></div>
+
+                        <div className="flex flex-col  items-center  px-4 py-2 h-[150px]">
+                          <div className="font-bold text-xl text-center h-12">
+                            {result.title || result.name}
+                          </div>
+                        </div>
+                      </div>
                     </Link>
                   )}
                 </div>
@@ -148,6 +182,14 @@ function SearchPage() {
           </div>
         )}
       </div>
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <WatchModal id={id} />
+      </Modal>
     </div>
   );
 }

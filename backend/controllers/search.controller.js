@@ -2,6 +2,39 @@ import { User } from "../models/user.model.js";
 import { fetchFromTMDB } from "../services/tmdb.service.js";
 
 var result = [];
+var genres = [];
+
+// const getGenre = async (type) => {
+//   var arr = [];
+//   try {
+//     const response = await fetchFromTMDB(
+//       `https://api.themoviedb.org/3/genre/tv/list?language=en`
+//     );
+//     arr = response.genres;
+//     return arr;
+//   } catch (error) {
+//     console.log("Error in searchPerson controller: ", error.message);
+//     return [];
+//   }
+// };
+
+const getGenre = async (type) => {
+  try {
+    // Ensure to replace 'YOUR_API_KEY' with your actual TMDB API key.
+    const response = await fetchFromTMDB(
+      `https://api.themoviedb.org/3/genre/${type}/list?language=en`
+    );
+
+    if (!response || !response.genres) {
+      throw new Error("Invalid response structure.");
+    }
+
+    return response.genres;
+  } catch (error) {
+    console.error("Error in getGenre function: ", error);
+    return [];
+  }
+};
 
 export async function search(req, res) {
   const { type, query } = req.params;
@@ -16,10 +49,24 @@ export async function search(req, res) {
 
     res.status(200).json({ success: true, content: response.results });
   } catch (error) {
-    console.log("Error in searchPerson controller: ", error.message);
+    console.log("Error in search controller: ", error.message);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 }
+
+const fetchGenresAndMapNames = async (searchResult, type) => {
+  const genres = await getGenre(type);
+  const names = searchResult.genre_ids
+    .map((id) => {
+      const genre = genres.find((item) => item.id === id);
+      return genre ? genre.name : null;
+    })
+    .filter((name) => name !== null);
+
+  const limitNames = names.slice(0, 3);
+  const concatenatedNames = limitNames.join(", ");
+  return concatenatedNames; // Return the concatenated names
+};
 
 export async function addSearchHistory(req, res) {
   const { type, id } = req.params;
@@ -40,16 +87,19 @@ export async function addSearchHistory(req, res) {
       (history) => history.id === searchId
     );
 
+    const concatenatedNames = await fetchGenresAndMapNames(searchResult, type);
+
     if (!alreadyExists) {
       // If it doesn't exist, push the new search result to the searchHistory array
       await User.findByIdAndUpdate(userId, {
         $push: {
           searchHistory: {
             id: searchId,
-            image: searchResult.poster_path || searchResult.profile_path,
+            image: searchResult.backdrop_path,
             title: searchResult.name || searchResult.title,
             searchType: type,
             createdAt: new Date(),
+            genre: concatenatedNames,
           },
         },
       });

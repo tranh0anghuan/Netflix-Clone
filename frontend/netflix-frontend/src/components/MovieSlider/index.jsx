@@ -3,8 +3,11 @@ import { useContentStore } from "../../store/content";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { SMALL_IMG_BASE_URL } from "../../utils/constants.js";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import "./index.css"; 
+import {
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import "./index.css";
 
 import { Modal } from "antd";
 import WatchModal from "../WatchModal/index.jsx";
@@ -16,7 +19,7 @@ function MovieSlider({ category }) {
 
   const [showArrows, setShowArrows] = useState(false);
 
-  const [id , setId] = useState(1)
+  const [id, setId] = useState(1);
 
   const sliderRef = useRef(null);
 
@@ -60,7 +63,6 @@ function MovieSlider({ category }) {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
   return (
     <div
       className="bg-black text-white relative px-5 md:px-20"
@@ -77,10 +79,10 @@ function MovieSlider({ category }) {
       >
         {content.map((item) => (
           <Link
-            // to={`/watch/${item.id}`}
-            onClick={()=>{
+            onClick={() => {
               setId(item.id);
-              showModal()}}
+              showModal();
+            }}
             className="min-w-[250px] relative group"
             key={item.id}
           >
@@ -119,7 +121,7 @@ function MovieSlider({ category }) {
         onCancel={handleCancel}
         footer={null}
       >
-        <WatchModal id={id}/>
+        <WatchModal id={id} />
       </Modal>
     </div>
   );

@@ -199,17 +199,32 @@ function WatchPage() {
                 if (content.poster_path === null) return null;
                 return (
                   <Link
-                    className="w-52 flex-none"
-                    key={content.id}
                     to={`/watch/${content.id}`}
+                    className="hover:scale-110 transition-transform duration-300 ease-linear"
+                    key={content.id}
                   >
-                    <img
-                      src={SMALL_IMG_BASE_URL + content.poster_path}
-                      alt="Poster Image"
-                    />
-                    <h4 className="mt02 text-lg font-semibold">
-                      {content.title || content.name}
-                    </h4>
+                    <div className="relative w-52  rounded overflow-hidden shadow-lg bg-[#2F2F2F] text-white m-2">
+                      <div className="relative h-48">
+                        <img
+                          className="w-full h-full object-cover"
+                          src={SMALL_IMG_BASE_URL + content.poster_path}
+                          alt={content.title || content.name}
+                        />
+                      </div>
+
+                      <div className="bg-gradient-to-t from-[#2F2F2F] via-transparent to-transparent absolute w-full h-[100px] top-[92px] left-0 z-10"></div>
+
+                      <div className="flex flex-col justify-between px-4 py-2 h-[200px]">
+                        <div className="font-bold text-sm h-12">
+                          {content.title || content.name}
+                        </div>
+                        <p className="text-gray-400 text-sm flex-grow">
+                          {content?.overview.length > 120
+                            ? content?.overview.slice(0, 120) + " ..."
+                            : content?.overview}
+                        </p>
+                      </div>
+                    </div>
                   </Link>
                 );
               })}
