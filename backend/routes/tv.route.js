@@ -4,6 +4,7 @@ import {
   getTrendingTV,
   getTVByCategory,
   getTVDetails,
+  getTVEpisodes,
   getTVTrailers,
 } from "../controllers/tv.controller.js";
 
@@ -14,5 +15,6 @@ router.get("/:id/trailers", getTVTrailers);
 router.get("/:id/details", getTVDetails);
 router.get("/:id/similar", getSimilarTV);
 router.get("/:category", getTVByCategory);
+router.get("/:id/season/:season", getTVEpisodes);
 
 export default router;

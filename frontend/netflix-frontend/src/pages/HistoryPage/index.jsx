@@ -188,7 +188,7 @@ function HistoryPage() {
         onCancel={handleCancel}
         footer={null}
       >
-        <WatchModal id={id} />
+        <WatchModal id={id} setId={setId}/>
       </Modal>
     </div>
   );

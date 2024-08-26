@@ -3,48 +3,48 @@ import { Link } from "react-router-dom";
 import { useContentStore } from "../../store/content";
 import axios from "axios";
 import { ChevronLeft, ChevronRight, Play, Plus } from "lucide-react";
-import ReactPlayer from "react-player";
 import {
   ORIGINAL_IMG_BASE_URL,
   SMALL_IMG_BASE_URL,
 } from "../../utils/constants";
 import { formatDate } from "../../utils/dateFuntion";
 import WatchPageSkeleton from "../../components/WatchPageSkeleton";
-import { Pagination } from "antd";
+import { Pagination, Select } from "antd";
 import toast from "react-hot-toast";
+import "./index.css";
 
-function WatchModal({ id }) {
-  const [trailers, setTrailers] = useState([]);
+function WatchModal({ id, setId }) {
+  const [episodes, setEpisodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState({});
   const [similarContent, setSimilarContent] = useState([]);
   const { contentType } = useContentStore();
   const sliderRef = useRef(null);
 
+  const [season, setSeason] = useState(1);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 8;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = trailers.slice(indexOfFirstItem, indexOfLastItem);
+  const currentData = episodes.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  useEffect(() => {
-    const getTrailers = async () => {
-      try {
-        const res = await axios.get(`/api/v1/${contentType}/${id}/trailers`);
-        setTrailers(res.data.trailers);
-      } catch (error) {
-        if (error.message.includes("404")) {
-          setTrailers([]);
-        }
+  const getEpisodesFromSelect = async (season1) => {
+    try {
+      setSeason(season1);
+      const res = await axios.get(`/api/v1/tv/${id}/season/${season1}`);
+      setEpisodes(res.data.content);
+    } catch (error) {
+      if (error.message.includes("404")) {
+        setEpisodes([]);
       }
-    };
-    getTrailers();
-  }, [contentType, id]);
+    }
+  };
 
   useEffect(() => {
     const getSimilarContent = async () => {
@@ -75,6 +75,21 @@ function WatchModal({ id }) {
     };
     getContentDetails();
   }, [contentType, id]);
+
+  useEffect(() => {
+    const getEpisodes = async () => {
+      try {
+        setSeason(1);
+        const res = await axios.get(`/api/v1/tv/${id}/season/1`);
+        setEpisodes(res.data.content);
+      } catch (error) {
+        if (error.message.includes("404")) {
+          setEpisodes([]);
+        }
+      }
+    };
+    getEpisodes();
+  }, [id]);
 
   const scrollLeft = () => {
     if (sliderRef.current) {
@@ -107,6 +122,17 @@ function WatchModal({ id }) {
         <WatchPageSkeleton />
       </div>
     );
+  }
+
+  const numberOfSeasons = [];
+
+  for (let i = 0; i < content.number_of_seasons; i++) {
+    numberOfSeasons.push({
+      value: i + 1,
+      label: content.seasons[i + 1]?.name
+        ? content.seasons[i + 1].name
+        : `Season ${i + 1}`,
+    });
   }
 
   return (
@@ -185,28 +211,43 @@ function WatchModal({ id }) {
               </div>
 
               <div className="w-full md:w-auto mb-4 md:mb-0">
-                <p className="text-2xl">{content?.title || content?.name}</p>
+                <Select
+                  value={season}
+                  style={{
+                    width: 120,
+                  }}
+                  onChange={(season) => {
+                    getEpisodesFromSelect(season);
+                  }}
+                  options={numberOfSeasons}
+                />
               </div>
             </div>
 
-            {trailers?.length > 0 &&
+            {episodes?.length > 0 &&
               currentData.map((item) => (
                 <>
-                  <div className="text-white p-4 rounded-lg shadow-md">
+                  <div className="text-white p-4 rounded-lg shadow-md pr-[50px]">
                     <div className="flex items-center">
-                      <ReactPlayer
-                        controls={true}
+                      <img
+                        src={ORIGINAL_IMG_BASE_URL + item?.still_path}
                         width={"20%"}
                         height={"100%"}
                         className="mx-auto overflow-hidden object-cover rounded-lg"
-                        url={`https:www.youtube.com/watch?v=${item.key}`}
                       />
                       <div className="flex-1 ml-5">
-                        <h2 className="text-lg font-semibold"> {item.name}</h2>
-                        <p className="text-gray-400">{item.site}</p>
-                      </div>
-                      <div className="text-gray-400">
-                        {Math.floor(Math.random() * 99) + 1}m
+                        <h2 className="text-lg font-semibold flex justify-between">
+                          {" "}
+                          {item.name}
+                          <div className="text-white ml-[30px]">
+                            {item.runtime}m
+                          </div>
+                        </h2>
+                        <p className="text-gray-400">
+                          {item?.overview.length > 200
+                            ? item?.overview.slice(0, 200) + " ..."
+                            : item?.overview}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -214,7 +255,7 @@ function WatchModal({ id }) {
                   <div className="border-t border-gray-800 my-4"></div>
                 </>
               ))}
-            {trailers?.length === 0 && (
+            {episodes?.length === 0 && (
               <h2 className="text-xl text-center mt-5 mb-5">
                 No episodes available for{" "}
                 <span className="font-bold text-red-600">
@@ -227,7 +268,7 @@ function WatchModal({ id }) {
               <Pagination
                 className="d-flex justify-center mb-5 bg-[#141414]"
                 current={currentPage}
-                total={trailers.length}
+                total={episodes.length}
                 pageSize={itemsPerPage}
                 onChange={handlePageChange}
               />
@@ -249,9 +290,11 @@ function WatchModal({ id }) {
               {similarContent.map((content) => {
                 if (content.poster_path === null) return null;
                 return (
-                  <Link
-                    to={`/watch/${content.id}`}
-                    className="hover:scale-105 transition-transform duration-300 ease-linear"
+                  <div
+                    onClick={() => {
+                      setId(content.id);
+                    }}
+                    className="hover:scale-105 transition-transform duration-300 ease-linear cursor-pointer"
                     key={content.id}
                   >
                     <div className=" relative w-52  rounded overflow-hidden shadow-lg bg-[#2F2F2F] text-white m-2">
@@ -267,7 +310,6 @@ function WatchModal({ id }) {
 
                       <div className="flex flex-col justify-between px-4 py-2 h-[200px]">
                         <div className="font-bold text-sm h-12">
-                          {/* {content.title || content.name} */}
                           {(content.title?.length > 35
                             ? content?.title.slice(0, 35) + " ..."
                             : content?.title) ||
@@ -282,7 +324,7 @@ function WatchModal({ id }) {
                         </p>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
 
